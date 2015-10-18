@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+<head lang="de">
+<meta charset="UTF-8">
+<title>Projektwochenplanung</title>
+<style type="text/css">
+  td       { }
+    .oben    { vertical-align:top; background-color:#FFFFFF; }
+    .mittig  { vertical-align:middle; background-color:#DDDDDD; }
+    .unten   { vertical-align:bottom; background-color:#EEEEEE; }
+    .w       {vertical-align:top; background-color:#80FFFF; }
+    .r       {vertical-align:top; background-color:#FFFF00; }
+    .a       {vertical-align:top; background-color:#FF0000; }
+    .b       {vertical-align:top; background-color:#00FF00; } 
+    .u       {vertical-align:top; background-color:#FF8000; }
+    .g       {vertical-align:top; background-color:#00FF00; }
+  br       { }
+    .grau    { height :100%; width: 100%; background-color:#CCCCCC; }
+    .weiss   { background-color:#000000; }
+</style>
+
+</head>
+<body>
+
+
+
+ 
+      
+ <table >
+ <colgroup>
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+    <col width= "8%">
+  
+  </colgroup>
+  <td rowspan = "3" colspan ="2">
+      <a href=/ target="_parent"> &Uuml;bersicht </a> 
+  </td>
+  <td rowspan = "3" colspan ="2">
+     <a href=/ShowLehrer/n target="Daten"> Lehrerinnen und Lehrer </a> 
+    
+  </td>
+  <td rowspan = "3" colspan ="2">
+     <a href=/ShowRaum target="Daten"> Raumplan </a> 
+  </td>
+        <td rowspan ="2" align ="right">
+             Farblegende
+        </td>
+        <td class ="a"> abgelehnt </td> 
+        <td class ="w"> wunsch </td>
+        <td class ="b"> bewilligt </td>
+        <td> </td>
+        <td> {{user.username}} </td>
+     <tr>
+ 
+         <td class ="u"> unvollstaendig </td> 
+         <td class ="r"> r&uuml;cksprache </td>
+         <td> </td>
+         <td> </td>
+         <td><a href=/logout target="Daten"> logout </a></td>
+
+
+  </body>
+</html>
+

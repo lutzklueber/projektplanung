@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+
+
+<html>
+<head lang="de">
+<meta charset="UTF-8">
+<title>Eingabe Projekte</title>
+<style type="text/css">
+  td       { }
+    .oben    { vertical-align:top; background-color:#FFFFFF; }
+    .mittig  { vertical-align:middle; background-color:#DDDDDD; }
+    .unten   { vertical-align:bottom; background-color:#EEEEEE; }
+    .w       {vertical-align:top; background-color:#80FFFF; }
+    .r       {vertical-align:top; background-color:#FFFF00; }
+    .a       {vertical-align:top; background-color:#FF0000; }
+    .b       {vertical-align:top; background-color:#FF8000; } 
+    .u       {vertical-align:top; background-color:#FF8000; }
+    .g       {vertical-align:top; background-color:#00FF00; }
+    .graue   {vertical-align:top; background-color:#E0E0E0; }
+    .weisse   { vertical-align:top;background-color:#FFFFFF; }
+  
+  br       { }
+    .grau    { height :100%; width: 100%; background-color:#CCCCCC; }
+    .weiss   { background-color:#FFFFFF; }
+    
+    textarea {
+       width: 100%;
+       min-height: 50px;
+       font-family: Arial, sans-serif;
+       font-size: 13px;
+       color: #444;
+       padding: 5px;
+    }
+    
+</style>
+
+
+
+</head>
+<body>
+
+
+{% load staticfiles %}
+{% block content %}
+
+  <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+  <colgroup>
+    <col width="5%">
+    <col width="15%">
+    <col width="20%">
+    <col width="20%">
+    <col width="20%">
+    <col width="20%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th rowspan ="2"> Klasse </th>
+      <th rowspan ="2"> Anzahl S. </th>
+      <th rowspan ="2"> </th>
+      <th rowspan="2"> Klassenl. </th>
+      <th rowspan="2" colspan = "2"> </th>
+      
+    </tr>
+  </thead>
+  
+
+  <tfoot>
+  	 <tr>
+        <td>
+          {{Projektset.klasse}} 
+           <a href=/projekt/{{Projektset.id}}/Druckversion> Druckversion </a>
+
+         </td>
+         <td class="weiss">
+              {{Gruppe.klassenstaerke}}
+         </td>
+      	 <td> </td>
+		    
+         <td class="weiss">
+               <b> {{Gruppe.klassenlehrer}} </b>
+          </td>
+          <td> {{klasse.klassenlehrer}}</td>
+          <td>
+          {% if user.is_superuser %}
+              <form action  method='POST'> 
+  			      {% csrf_token %}
+  			      {% if Projektset.returnStatus = "w" %}
+  			          <input type="radio" name="wahl" value="w" checked="checked">wunsch<br>
+  			      {% else %}
+  			          <input type="radio" name="wahl" value="w" >wunsch<br> 
+            	  {% endif %} 
+            	  {% if Projektset.returnStatus = "a" %}
+  			          <input type="radio" name="wahl" value="a" checked="checked">abgelehnt<br>
+  			      {% else %}
+  			          <input type="radio" name="wahl" value="a" >abgelehnt<br> 
+            	  {% endif %} 
+            	  {% if Projektset.returnStatus = "g" %}
+  			          <input type="radio" name="wahl" value="g" checked="checked">bewilligt<br>
+  			      {% else %}
+  			          <input type="radio" name="wahl" value="g" >bewilligt<br> 
+            	  {% endif %} 
+            	  {% if Projektset.returnStatus = "r" %}
+  			          <input type="radio" name="wahl" value="r" checked="checked">r&uuml;cksprache<br>
+  			      {% else %}
+  			          <input type="radio" name="wahl" value="r" >r&uuml;cksprache<br> 
+            	  {% endif %} 
+				  
+        	        <input type="submit">
+        	        
+        	    </form>
+          
+          {% endif %}
+          </td>
+ 	    
+ 	 </tr >
+ 	 <tr>
+ 	   <td>
+ 	       <br>
+ 	       Thema<br>
+ 	       <br>
+		   <br> 
+	   </td>	
+	  
+ 	   
+  			 <form action  method='POST'> 
+  			    <td colspan ="4">
+ 	      
+  	      
+ 	                <textarea name ="Thema" cols = "50" rows = "4" class ={{Projektset.returnStatus}} placeholder="Bitte Projektthema angeben! : Danach rechts 'Thema setzen' bet&auml;tigen-->">{{Projektset.projektthema}}</textarea>
+ 	            </td>
+ 	        
+ 	   
+ 	            <td>
+ 	           
+ 	            {% csrf_token %}
+ 	                {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+ 	                   {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit" value ='Thema setzen'> 
+        	           {% endif %}
+        	        {% endif %}
+        	     
+        	    </td>
+        	 </form> 
+ 	    
+ 	    
+ 	</tr>
+ 	 <tr>
+ 	   <td>
+ 	       <br>
+ 	       Beschr.<br>
+ 	       <br>
+		   <br> 
+	   </td>	
+	   
+ 	     
+  			 <form action  method='POST'> 
+  			    <td colspan ="4" >
+ 	      
+  	      
+ 	                <textarea name ="Besch." cols = "50" rows = "4" class ={{Projektset.returnStatus}} placeholder="Hier k&ouml;nnen Sie eine Projektbeschreibung angeben: Danach rechts 'Beschreibung setzen' bet&auml;tigen-->">{{Projektset.bemerkung}}</textarea>
+ 	            </td>
+ 	        
+ 	   
+ 	            <td>
+ 	           
+ 	            {% csrf_token %}
+ 	                {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+ 	                    {% if Projektset.returnStatus = "w"%}  
+        	                  <input type="submit" value ='Beschreibung setzen'> 
+        	            {% endif %}  
+        	        {% endif %}
+        	     
+        	    </td>
+        	 </form> 
+ 	    
+ 	</tr> 	<tr>
+ 	    <td colspan = "6">
+ 	    <br>
+ 	    </td>
+ 	</tr>
+ 	<tr>
+ 	   <td>
+ 	       <br>
+	   </td>	     
+ 	   <td>
+ 	       Di
+	   </td>
+	   <td>
+ 	       Mi
+	   </td>
+	   <td>
+ 	       Do
+	   </td>
+	   <td>
+ 	       Fr
+	   </td>
+	   <td>
+ 	       Sa
+	   </td>
+ 	</tr>
+ 	<tr>
+ 	   <td>
+ 	       R&auml;ume
+ 	   </td>
+ 	   <td>
+ 	     <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie R&auml;ume</th>
+      			  <th> <br></th>
+      			  <th > R&auml;ume</th>
+			   </tr>
+  			</thead>
+  			
+  			{%if Projektset.getDienstagsRaeume %} 
+  			    <td class= weisse>
+  			{% else %}
+  			    <td class= graue>
+  			{% endif %}
+  			    <form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="frd" size="5"> 
+                     {% for item in freiRDi%}	   
+        	            <option value = {{item}}> {{item}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	           
+        	           
+        	       {% endif %}
+        	        </form>
+         		
+            </td>
+            {%if Projektset.getDienstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class= graue >
+  			{% endif %}
+                <br> 
+            </td>
+        	{%if Projektset.getDienstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class= graue>
+  			{% endif %}
+ 	               <form action  method='POST'> 
+  			           {% csrf_token %}
+            	       <select name="rd" size="5" class = {{Projektset.returnStatus}}> 
+                     	 {% for item in Projektset.getDienstagsRaeume%}  
+        	                 <option value ={{item.getRaeume}}> {{item.getRaeume}} </option> <br>
+        	             {% endfor %}
+        	       
+        	          </select> 
+                       {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                          {% if Projektset.returnStatus = "w"%}  
+        	                  <input type="submit">
+        	              {% endif %} 
+        	           {% endif %}
+        	        </form>
+            	    
+        		
+           </td>
+         </table>  
+ 	   </td>
+ 	   <td>
+ 	      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie R&auml;ume</th>
+      			  <th> <br></th>
+      			  <th > R&auml;ume</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getMittwochsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			      <form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="frm" size="5"> 
+                     {% for item in freiRMi%}	   
+        	            <option value = {{item}}> {{item}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	       {% endif %}
+        	       </form>
+         		
+            </td>
+            {%if Projektset.getMittwochsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                 <br> 
+                 
+            </td>
+        	{%if Projektset.getMittwochsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           <form action method='POST'> 
+  			           {% csrf_token %}
+            	       <select name="rm" size="5" class = {{Projektset.returnStatus}}> 
+                     	 {% for item in Projektset.getMittwochsRaeume%}  
+        	                 <option value ={{item.getRaeume}}> {{item.getRaeume}} </option> <br>
+        	             {% endfor %}
+        	       
+        	          </select> 
+        	          
+        	          {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}
+        	             {% if Projektset.returnStatus = "w"%}    
+        	                 <input type="submit"> 
+        	             {% endif %}
+        	           {% endif %}
+        	        </form>
+           </td>
+         </table>  
+ 	   </td>
+ 	   <td>
+ 	    <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie R&auml;ume</th>
+      			  <th> <br></th>
+      			  <th > R&auml;ume</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getDonnerstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class=graue>
+  			{% endif %}
+  			      <form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="frdo" size="5"> 
+                     {% for item in freiRDo%}	   
+        	            <option value = {{item}}> {{item}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	           
+        	        {% endif %}
+        	        </form>
+         		
+            </td>
+            {%if Projektset.getDonnerstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                 <br> 
+            </td>
+        	{%if Projektset.getDonnerstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           <form action method='POST'> 
+  			           {% csrf_token %}
+            	       <select name="rdo" size="5" class = {{Projektset.returnStatus}}> 
+                     	 {% for item in Projektset.getDonnerstagsRaeume%}  
+        	                 <option value ={{item.getRaeume}}> {{item.getRaeume}} </option> <br>
+        	             {% endfor %}
+        	       
+        	          </select>     
+        		       {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+        		           {% if Projektset.returnStatus = "w"%}  
+        	                   <input type="submit"> 
+        	               {% endif %}
+        	           {% endif %}
+        	        </form>
+           </td>
+         </table>  
+ 	   </td>
+ 	   <td>
+ 	    <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie R&auml;ume</th>
+      			  <th> <br></th>
+      			  <th > R&auml;ume</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getFreitagsRaeume %} 
+  			    <td class= weisse>
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			      <form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="frf" size="5"> 
+                     {% for item in freiRFr%}	   
+        	            <option value = {{item}}> {{item}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	       {% endif %}
+        	      </form>
+            </td>
+            {%if Projektset.getFreitagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                  <br> 
+            </td>
+        	{%if Projektset.getFreitagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           <form action method='POST'> 
+  			           {% csrf_token %}
+            	       <select name="rf" size="5" class = {{Projektset.returnStatus}}> 
+                     	 {% for item in Projektset.getFreitagsRaeume%}  
+        	                 <option value ={{item.getRaeume}}> {{item.getRaeume}} </option> <br>
+        	             {% endfor %}
+        	       
+        	          </select>     
+        		       {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+        		          {% if Projektset.returnStatus = "w"%}  
+        	                   <input type="submit"> 
+        	               {% endif %}
+        	           {% endif %}
+        	        </form>
+           </td>
+         </table>  
+ 	   </td>
+ 	   <td>
+ 	    <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie R&auml;ume</th>
+      			  <th> <br></th>
+      			  <th > R&auml;ume</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getSamstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			      <form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="frs" size="5"> 
+                     {% for item in freiRSa%}	   
+        	            <option value = {{item}}> {{item}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                      {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	          {% endif %}    
+        	       {% endif %}
+        	        </form>
+            </td>
+            {%if Projektset.getSamstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                 <br> 
+            </td>
+        	{%if Projektset.getSamstagsRaeume %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           <form action method='POST'> 
+  			           {% csrf_token %}
+            	       <select name="rs" size="5" class = {{Projektset.returnStatus}}> 
+                     	 {% for item in Projektset.getSamstagsRaeume%}  
+        	                 <option value ={{item.getRaeume}}> {{item.getRaeume}} </option> <br>
+        	             {% endfor %}
+        	       
+        	          </select> 
+        	           {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+        	              {% if Projektset.returnStatus = "w"%}  
+        	                  <input type="submit"> 
+        	              {% endif %}
+        	           {% endif %}
+        	        </form>
+           </td>
+         </table>  
+ 	   </td>
+ 	 </tr>
+ 	 <tr>
+ 	   <td>
+ 	       Betreuer
+ 	   </td>
+ 	   <td>
+ 	   
+ 	      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie Lehrer</th>
+      			  <th> <br></th>
+      			  <th > Kollegen</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getDienstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+            <form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="befd" size="5"> 
+                     {% for item in freiDi%}	   
+        	            <option value = {{item.kurzel}}> {{item.kurzel}} </option>
+        	         {% endfor %}
+        	      </select> 
+                    {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	        {% endif %}
+        	        </form>			
+         		
+            </td>
+                {%if Projektset.getDienstagsBetreuer %} 
+  			        <td class= weisse >
+  			    {% else %}
+  			        <td class = graue>
+  			    {% endif %} 
+  			     <br> 
+  			</td>
+        	{%if Projektset.getDienstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           
+        	       <form action method='POST'> 
+        	       {% csrf_token %}
+            	      <select name="bed" size="5" class = {{Projektset.returnStatus}}> 
+            	         {% for item in Projektset.getDienstagsBetreuer%}
+            	              {% if item.getBetreuer %} 
+        	                     <option value = {{item.getBetreuer}}> {{item.getBetreuer}} </option>
+        	                  {% endif %}
+                         {% endfor %}
+        	          </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	       {% endif %}
+        	        </form>
+            	    
+        		
+           </td>
+         </table>  
+ 	    	 
+            
+        
+ 	   </td>
+ 	   <td>
+  	   
+ 	      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie Lehrer</th>
+      			  <th> <br></th>
+      			  <th > Kollegen</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getMittwochsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			<form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="befm" size="5"> 
+                     {% for item in freiMi%}	   
+        	            <option value = {{item.kurzel}}> {{item.kurzel}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}
+                       {% if Projektset.returnStatus = "w"%}    
+        	              <input type="submit"> 
+        	           {% endif %}   
+        	       {% endif %}
+        	        </form>    
+  			   
+            </td>
+            {%if Projektset.getMittwochsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                 <br> 
+            </td>
+        	{%if Projektset.getMittwochsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           
+        	       <form action method='POST'> 
+        	       {% csrf_token %}
+            	      <select name="bem" size="5" class = {{Projektset.returnStatus}}> 
+            	         {% for item in Projektset.getMittwochsBetreuer%}
+        	                <option value = {{item.getBetreuer}}> {{item.getBetreuer}} </option>
+                         {% endfor %}
+        	          </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                       {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	           {% endif %}
+        	        {% endif %}
+        	        </form>
+            	    
+        		
+           </td>
+         </table>
+ 	   </td>
+ 	   <td>
+  	   
+ 	      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie Lehrer</th>
+      			  <th> <br></th>
+      			  <th > Kollegen</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getDonnerstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			<form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="befdo" size="5"> 
+                     {% for item in freiDo%}	   
+        	            <option value = {{item.kurzel}}> {{item.kurzel}} </option>
+        	         {% endfor %}
+        	      </select> 
+                   {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %} 
+                      {% if Projektset.returnStatus = "w"%}   
+        	              <input type="submit"> 
+        	          {% endif %}
+        	        
+        	       {% endif %}   
+        	        </form>
+  				
+            </td>
+            {%if Projektset.getDonnerstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %} 
+                 <br> 
+            </td>
+        	{%if Projektset.getDonnerstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           
+        	       <form action method='POST'> 
+        	       {% csrf_token %} 
+            	      <select name="bedo" size="5" class = {{Projektset.returnStatus}}> 
+            	         {% for item in Projektset.getDonnerstagsBetreuer%}
+        	                <option value = {{item.getBetreuer}}> {{item.getBetreuer}} </option>
+                         {% endfor %}
+        	          </select>
+        	          {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+        	             {% if Projektset.returnStatus = "w"%}  
+        	                 <input type="submit"> 
+        	             {% endif %}
+        	           {% endif %}
+        	        </form>
+            	    
+        		
+           </td>
+         </table>
+ 	   </td>
+ 	   <td>
+ 	   
+ 	      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie Lehrer</th>
+      			  <th> <br></th>
+      			  <th > Kollegen</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getFreitagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			<form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="beff" size="5"> 
+                     {% for item in freiFr%}	   
+        	            <option value = {{item.kurzel}}> {{item.kurzel}} </option>
+        	         {% endfor %}
+        	      </select> 
+                  {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                     {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	          {% endif %}
+        	      {% endif %}
+        	 </form>
+  				
+            </td>
+            {%if Projektset.getFreitagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                 <br> 
+            </td>
+        	{%if Projektset.getFreitagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           
+        	       <form action method='POST'> 
+        	       {% csrf_token %} 
+            	      <select name="bef" size="5" class = {{Projektset.returnStatus}}> 
+            	         {% for item in Projektset.getFreitagsBetreuer%}
+        	                <option value = {{item.getBetreuer}}> {{item.getBetreuer}} </option>
+                         {% endfor %}
+        	          </select> 
+                      {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                         {% if Projektset.returnStatus = "w"%}  
+        	                 <input type="submit">
+        	             {% endif %} 
+        	           {% endif %}
+        	        </form>
+            	    
+        		
+           </td>
+         </table> 	   
+      </td>
+ 	   <td>
+  	   
+ 	      <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+ 	        <colgroup>
+    			<col width="48%">
+    			<col width="4%">
+    			<col width="48%">
+    
+  			</colgroup>
+  			<thead>
+    		   <tr>
+      			  <th> freie Lehrer</th>
+      			  <th> <br></th>
+      			  <th > Kollegen</th>
+			   </tr>
+  			</thead>
+  			{%if Projektset.getSamstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+  			<form action method='POST'> 
+  			      {% csrf_token %}
+            	  <select name="befs" size="5"> 
+                     {% for item in freiSa%}	   
+        	            <option value = {{item.kurzel}}> {{item.kurzel}} </option>
+        	         {% endfor %}
+        	      </select> 
+                  {% if user.username = Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}  
+                     {% if Projektset.returnStatus = "w"%}  
+        	              <input type="submit"> 
+        	         {% endif %}     
+        	      {% endif %}
+        	 </form>
+  				
+            </td>
+            {%if Projektset.getSamstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+                 <br> 
+            </td>
+        	{%if Projektset.getSamstagsBetreuer %} 
+  			    <td class= weisse >
+  			{% else %}
+  			    <td class = graue>
+  			{% endif %}
+ 	           
+        	       <form action method='POST'> 
+        	       {% csrf_token %} 
+            	      <select name="bes" size="5" class = {{Projektset.returnStatus}}> 
+            	         {% for item in Projektset.getSamstagsBetreuer%}
+        	                <option value = {{item.getBetreuer}}> {{item.getBetreuer}} </option>
+                         {% endfor %}
+        	          </select> 
+        	          
+                      {% if user.username == Projektset.besitzer.kurzel or perms.Daten2.change_projekt or user.username = Gruppe.klassenlehrer.kurzel %}
+                        {% if Projektset.returnStatus = "w"%}  
+        	                 <input type="submit"> 
+        	            {% endif %}  
+        	          {% endif %}
+        	        </form>
+            	    
+        		
+           </td>
+         </table>
+ 	   </td>
+ 	 </tr>
+ 	  	<tr>
+ 	   <td>
+ 	       <br>
+ 	       <br>
+ 	       <br>
+		   <br> 
+	   </td>	     
+ 	   <td colspan ="6">
+ 	      <textarea rows="3" cols="50" >{{Projektset.agenda}}</textarea>
+ 	    </td> 
+ 	</tr>
+  </tfoot>
+
+{% endblock %}

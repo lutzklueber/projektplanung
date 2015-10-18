@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+<head lang="de">
+<meta charset="UTF-8">
+<title>Projektwochenplanung</title>
+<style type="text/css">
+  td       { }
+    .oben    { vertical-align:top; background-color:#FFFFFF; }
+    .mittig  { vertical-align:middle; background-color:#DDDDDD; }
+    .unten   { vertical-align:bottom; background-color:#EEEEEE; }
+    .w       {vertical-align:top; background-color:#80FFFF; }
+    .r       {vertical-align:top; background-color:#FFFF00; }
+    .a       {vertical-align:top; background-color:#FF0000; }
+    .u       {vertical-align:top; background-color:#FF8000; } 
+    .b       {vertical-align:top; background-color:#FF8000; }
+    .g       {vertical-align:top; background-color:#00FF00; }
+  br       { }
+    .grau    { height :100%; width: 100%; background-color:#CCCCCC; }
+    .weiss   { background-color:#000000; }
+</style>
+
+</head>
+<body>
+
+<!DOCTYPE html>
+{% load staticfiles %}
+
+
+  <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+  <colgroup>
+    <col width="10%">
+    <col width="30%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th rowspan ="2"> Projektgruppe </th>
+      <th rowspan ="2"> Projektthema </th>
+      <th colspan="2"> Di </th>
+      <th colspan="2"> Mi </th>
+      <th colspan="2"> Do </th>
+      <th colspan="2"> Fr </th>
+      <th colspan="2"> Sa </th>
+    </tr>
+    <tr>
+      <th> Raum </th>
+      <th>  Betreuer </th>
+      <th> Raum </th>
+      <th>  Betreuer </th>
+      <th> Raum </th>
+      <th>  Betreuer </th>
+      <th> Raum </th>
+      <th>  Betreuer </th>
+      <th> Raum  </th>
+      <th>  Betreuer </th>
+     
+  </thead>
+  <tfoot>
+  {% for klasse in Klassen %}
+    <tr>
+      <td  class={{klasse.istvollstaendig}}>
+		   {% if klasse.getProjektid %}
+               <a href=/projekt/{{klasse.getProjektid}}> {{klasse.bezeichnung}} </a>
+           {% else %}
+               <a href=/projekt/neu/{{klasse.id}}> {{klasse.bezeichnung}} </a>
+		   {% endif %}
+      </td>
+    
+      <td class={{klasse.returnStatus}}>
+        <b> {{klasse.getProjekt}} </b>
+      </td>
+     
+       {% if klasse.getDienstagsRaeume %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getDienstagsRaeume %}
+            
+            	{{item.getRaeume}} <br>
+            
+        {% endfor %}
+      </td>
+       {% if klasse.getDienstagsBetreuer %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getDienstagsBetreuer %}
+            {% if item.getBetreuer %}
+            	{{item.getBetreuer}} <br>
+            {% endif %}
+        {% endfor %}
+      </td>
+       {% if klasse.getMittwochsRaeume %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getMittwochsRaeume %}
+            
+            	{{item.getRaeume}} <br>
+            
+        {% endfor %}
+      </td>
+       {% if klasse.getMittwochsBetreuer %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getMittwochsBetreuer %}
+            
+            	{{item.getBetreuer}} <br>
+            
+        {% endfor %}
+      </td>
+       {% if klasse.getDonnerstagsRaeume %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getDonnerstagsRaeume %}
+            
+            	{{item.getRaeume}} <br>
+            
+        {% endfor %}
+      </td>
+       {% if klasse.getDonnerstagsBetreuer %}
+          <td class={{klasse.returnStatus}}>
+       {% else %}
+         <td class={{klasse.istvollstaendig}}>
+       {% endif %}
+        {% for item in klasse.getDonnerstagsBetreuer %}
+            
+            	{{item.getBetreuer}} <br>
+            
+        {% endfor %}
+      </td>
+       {% if klasse.getFreitagsRaeume %}
+          <td class={{klasse.returnStatus}}>
+       {% else %}
+         <td class={{klasse.istvollstaendig}}>
+       {% endif %}
+        {% for item in klasse.getFreitagsRaeume %}
+            
+            	{{item.getRaeume}} <br>
+            
+        {% endfor %}
+      </td>
+      {% if klasse.getFreitagsBetreuer %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getFreitagsBetreuer %}
+            
+            	{{item.getBetreuer}} <br>
+            
+        {% endfor %}
+      </td>
+       {% if klasse.getSamstagsRaeume %}
+          <td class={{klasse.returnStatus}}>
+       {% else %}
+         <td class={{klasse.istvollstaendig}}>
+       {% endif %}
+           {% for item in klasse.getSamstagsRaeume %}
+            
+            	{{item.getRaeume}} <br>
+            
+           {% endfor %}
+        </td>
+       {% if klasse.getSamstagsBetreuer %}
+          <td class={{klasse.returnStatus}}>
+      {% else %}
+         <td class={{klasse.istvollstaendig}}>
+      {% endif %}
+        {% for item in klasse.getSamstagsBetreuer %}
+              
+            	{{item.getBetreuer}} <br>
+            
+        {% endfor %}
+      </td>
+
+   </tr>
+  {% endfor %}
+  </tfoot>
+  <tbody>
+
+
+
+
+  </tbody>
+</table>
+
+</body>
+</html>
+

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<head lang="de">
+<meta charset="UTF-8">
+
+{% load staticfiles %}
+
+<html>
+
+<title>&Uuml;bersicht der Planung f&uuml;r Lehrerinnen und Lehrer</title>
+<style type="text/css">
+  td       { }
+    .oben    { vertical-align:center; background-color:#FFFFFF; }
+    .mittig  { vertical-align:middle; background-color:#DDDDDD; }
+    .unten   { vertical-align:bottom; background-color:#EEEEEE; }
+    .w       {vertical-align:center; background-color:#80FFFF; }
+    .r       {vertical-align:center; background-color:#FFFF00; }
+    .a       {vertical-align:center; background-color:#FF0000; }
+    .b       {vertical-align:center; background-color:#FF8000; } 
+    .u       {vertical-align:center; background-color:#FF8000; }
+    .g       {vertical-align:center; background-color:#00FF00; }
+  br       { }
+    .grau    { height :100%; width: 100%; background-color:#CCCCCC; }
+    .weiss   { background-color:#FFFFFF; }
+</style>
+
+</head>
+<body>
+
+<!DOCTYPE html>
+{% load staticfiles %}
+
+
+  <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+  <colgroup>
+    <col width="10%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+    <col width="9%">
+
+    
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+        <th colspan ="11"> <h2> Raumplan </h2></th>
+     </tr>
+     <tr>
+         <th rowspan ="3" > 
+         
+            
+         </th>
+        <th colspan="10"> Einsatz </th>
+     </tr>
+     <tr>
+      <th colspan="2"> Di </th>
+      <th colspan="2"> Mi </th>
+      <th colspan="2"> Do </th>
+      <th colspan="2"> Fr </th>
+      <th colspan="2"> Sa </th>
+    </tr>
+   
+  </thead>
+  <tfoot>
+    <tbody>
+       {% for raum in Projektset %}
+         
+          {% if forloop.counter0|divisibleby:"2" %}
+              <tr class=grau>
+          {% else %}
+               <tr class=weiss> 
+		  {% endif %}
+		  
+          	  	
+           <td >
+           
+                  {{raum.bezeichnung}} </a>
+           </td>
+           
+ 			<td>
+               {{raum.getDienstagsProjekt}}          
+
+            </td>
+            <td >
+               {% for item in raum.getDienstagsBetreuer %} 
+                  {{item.betreuer}}<br>
+               {% endfor %}
+
+            </td>
+            <td>              
+               {{raum.getMittwochsProjekt}}
+            </td>
+        	<td>              
+               {% for item in raum.getMittwochsBetreuer %} 
+                  {{item.betreuer}}<br>
+               {% endfor %}
+        	</td>
+        	<td>
+               {{raum.getDonnerstagsProjekt}}     
+        	</td>
+        	<td>
+               {% for item in raum.getDonnerstagsBetreuer %} 
+                  {{item.betreuer}}<br>
+               {% endfor %}  
+        	</td>
+        	<td>
+                {{raum.getFreitagsProjekt}}     
+        	</td>
+        	<td>
+              {% for item in raum.getFreitagsBetreuer %} 
+                  {{item.betreuer}}<br>
+               {% endfor %}
+        	</td>
+        	<td>
+               {{raum.getSamstagsProjekt}}     
+        	</td>
+        		<td>
+                   {% for item in raum.getSamstagsBetreuer %} 
+                       {{item.betreuer}}<br>
+                   {% endfor %}
+        		</td>
+          </tr>
+       {% endfor %}
+
+
+  </tbody>
+</table>
+
+</body>
+</html>
+

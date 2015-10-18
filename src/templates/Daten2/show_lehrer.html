@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<head lang="de">
+<meta charset="UTF-8">
+
+{% load staticfiles %}
+
+<html>
+
+<title>&Uuml;bersicht der Planung f&uuml;r Lehrerinnen und Lehrer</title>
+<style type="text/css">
+  td       { }
+    .oben    { vertical-align:center; background-color:#FFFFFF; }
+    .mittig  { vertical-align:middle; background-color:#DDDDDD; }
+    .unten   { vertical-align:bottom; background-color:#EEEEEE; }
+    .w       {vertical-align:center; background-color:#80FFFF; }
+    .r       {vertical-align:center; background-color:#FFFF00; }
+    .a       {vertical-align:center; background-color:#FF0000; }
+    .b       {vertical-align:center; background-color:#FF8000; } 
+    .u       {vertical-align:center; background-color:#FF8000; }
+    .g       {vertical-align:center; background-color:#00FF00; }
+  br       { }
+    .grau    { height :100%; width: 100%; background-color:#CCCCCC; }
+    .weiss   { background-color:#FFFFFF; }
+</style>
+
+</head>
+<body>
+
+<!DOCTYPE html>
+{% load staticfiles %}
+
+
+  <table border="1" cellpadding="0" cellspacing="0" width="100%" >
+  <colgroup>
+    <col width="5%">
+    <col width="2%">
+    <col width="13%">
+    <col width="10%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    <col width="6%">
+    
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+        <th colspan ="14"> <h2> Lehrereinsatz </h2></th>
+     </tr>
+     <tr>
+         <th rowspan ="3" colspan="4"> 
+            
+            {% if Sortierung != "a" %}
+                 
+                       <a href="/ShowLehrer/n" target="Daten"> Lehrerinnen und Lehrer </a> 
+                
+             {% else %}
+                
+                        <a href="/ShowLehrer/a" target="Daten"> Abteilung, Lehrerinnen und Lehrer </a> 
+                
+             {%endif%}
+            
+         </th>
+        <th colspan="10"> Einsatz </th>
+     </tr>
+     <tr>
+      <th colspan="2"> Di </th>
+      <th colspan="2"> Mi </th>
+      <th colspan="2"> Do </th>
+      <th colspan="2"> Fr </th>
+      <th colspan="2"> Sa </th>
+    </tr>
+   
+  </thead>
+  <tfoot>
+    <tbody>
+       {% for lehrer in Projektset %}
+         
+          {% if forloop.counter0|divisibleby:"2" %}
+              <tr class=grau>
+          {% else %}
+               <tr class=weiss> 
+		  {% endif %}
+		  
+          	  {% if lehrer.getStatus != "0" %}	
+                  <td  class='u'>
+              {% else %}
+                  <td  class='oben'>
+              {% endif %}
+                  {{lehrer.kurzel}} </a>
+        
+
+               </td>
+               <td>
+                  
+               </td>
+ 			   <td  class={{lehrer.getStatus}}>
+                  {{lehrer.name}} </a>
+        
+
+               </td>
+                <td  class={{lehrer.getStatus}}>
+                  {{lehrer.vorname}} </a>
+        
+
+               </td>
+               <td>              
+                 {% for item in lehrer.getDienstagsProjekte%}
+        	
+                 	{{item.klasse}}<br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>              
+                 {% for item in lehrer.getDienstagsRaum%}
+        	
+                 	{{item}}<br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getMittwochsProjekte%}
+        	
+                 	{{item.klasse}}<br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getMittwochsRaum%}
+        	
+                 	{{item.raum}} <br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getDonnerstagsProjekte%}
+        	
+                 	{{item.klasse}} <br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getDonnerstagsRaum%}
+        	
+                 	{{item.raum}} <br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getFreitagsProjekte%}
+        	
+                 	{{item.klasse}}<br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getFreitagsRaum%}
+        	
+                 	{{item.raum}} <br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getSamstagsProjekte%}
+        	
+                 	{{item.klasse}}<br>
+            
+        		  {% endfor %}  
+        		</td>
+        		<td>
+                 {% for item in lehrer.getSamstagsRaum%}
+        	
+                 	{{item.raum}} <br>
+            
+        		  {% endfor %}  
+        		</td>
+        		
+          </tr>
+       {% endfor %}
+
+
+  </tbody>
+</table>
+
+</body>
+</html>
+
